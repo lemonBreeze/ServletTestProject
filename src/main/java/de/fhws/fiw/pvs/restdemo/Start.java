@@ -1,4 +1,4 @@
-package de.fhws.fiw.pvs.servletdemo;
+package de.fhws.fiw.pvs.restdemo;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.WebResourceRoot;
@@ -20,18 +20,18 @@ public class Start
 
 	public static void main( String[] args ) throws Exception
 	{
-		Tomcat tomcat = new Tomcat();
+		Tomcat tomcat = new Tomcat( );
 		tomcat.setPort( 8080 );
 
-		Context context = tomcat.addWebapp( CONTEXT_PATH, new File( WEB_APP_LOCATION ).getAbsolutePath());
-		String pathToClasses = new File(WEB_APP_CLASSES).getAbsolutePath();
-		WebResourceRoot resources = new StandardRoot(context);
-		DirResourceSet dirResourceSet = new DirResourceSet(resources, WEB_APP_MOUNT, pathToClasses, "/");
+		Context context = tomcat.addWebapp( CONTEXT_PATH, new File( WEB_APP_LOCATION ).getAbsolutePath( ) );
+		String pathToClasses = new File( WEB_APP_CLASSES ).getAbsolutePath( );
+		WebResourceRoot resources = new StandardRoot( context );
+		DirResourceSet dirResourceSet = new DirResourceSet( resources, WEB_APP_MOUNT, pathToClasses, "/" );
 
 		resources.addPreResources( dirResourceSet );
-		context.setResources(resources);
+		context.setResources( resources );
 
-		tomcat.start();
-		tomcat.getServer().await();
+		tomcat.start( );
+		tomcat.getServer( ).await( );
 	}
 }
