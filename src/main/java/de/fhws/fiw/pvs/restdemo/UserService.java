@@ -105,6 +105,10 @@ public class UserService
 	@Produces( MediaType.APPLICATION_JSON )
 	public Response getPersonById( @PathParam( "id" ) long id )
 	{
+		if ( persons.get( id ) == null )
+		{
+			throw new WebApplicationException( Response.status( 404 ).build( ) );
+		}
 		return Response.ok( persons.get( id ) ).build( );
 	}
 
