@@ -7,6 +7,7 @@ import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import javax.ws.rs.ApplicationPath;
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +26,11 @@ public class Application extends ResourceConfig
 		register( MultiPartFeature.class );
 		register( CorsFilter.class );
 		register( new GensonJaxRSFeature( ).use(
-			new GensonBuilder( ).setSkipNull( true ).useIndentation( true ).create( ) ) );
+			new GensonBuilder( ).setSkipNull( true )
+								.useIndentation( true )
+								.useDateAsTimestamp( false )
+								.useDateFormat( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" ) )
+								.create( ) ) );
 	}
 
 	protected Set<Class<?>> getServiceClasses( )
