@@ -14,7 +14,7 @@ import java.util.Map;
  * Created by braunpet on 24.04.17.
  */
 @Path( "users" )
-public class UserService
+public class PersonService
 {
 	private static long counter = 0L;
 

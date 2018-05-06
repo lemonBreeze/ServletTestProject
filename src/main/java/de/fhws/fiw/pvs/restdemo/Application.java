@@ -37,7 +37,7 @@ public class Application extends ResourceConfig
 	{
 		Set<Class<?>> returnValue = new HashSet<>( );
 
-		returnValue.add( UserService.class );
+		returnValue.add( PersonService.class );
 
 		return returnValue;
 	}
