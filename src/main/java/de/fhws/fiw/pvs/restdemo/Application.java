@@ -35,7 +35,7 @@ public class Application extends ResourceConfig
 
 	protected Set<Class<?>> getServiceClasses( )
 	{
-		Set<Class<?>> returnValue = new HashSet<>( );
+		final Set<Class<?>> returnValue = new HashSet<>( );
 
 		returnValue.add( PersonService.class );
 

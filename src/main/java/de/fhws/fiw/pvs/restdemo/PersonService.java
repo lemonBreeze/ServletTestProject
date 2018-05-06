@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by braunpet on 24.04.17.
  */
-@Path( "users" )
+@Path( "persons" )
 public class PersonService
 {
 	private static long counter = 0L;
@@ -23,7 +23,7 @@ public class PersonService
 		return counter++;
 	}
 
-	private static Map<Long, Person> persons = new HashMap<>( );
+	private static final Map<Long, Person> persons = new HashMap<>( );
 
 	@Context
 	protected UriInfo uriInfo;
@@ -38,21 +38,13 @@ public class PersonService
 	protected HttpServletRequest httpServletRequest;
 
 	@GET
-	@Path( "ping" )
-	@Produces( MediaType.TEXT_PLAIN )
-	public Response ping( )
-	{
-		return Response.ok( "Hello All Persons!" ).build( );
-	}
-
-	@GET
 	@Produces( MediaType.APPLICATION_JSON )
-	public Response searchPersons( @QueryParam( "firstName" ) @DefaultValue( "" ) String filterFirstName,
-		@QueryParam( "lastName" ) @DefaultValue( "" ) String filterLastName )
+	public Response searchPersons( @QueryParam( "firstName" ) @DefaultValue( "" ) final String filterFirstName,
+		@QueryParam( "lastName" ) @DefaultValue( "" ) final String filterLastName )
 	{
 		List<Person> personList = new ArrayList<>( );
 
-		for ( Map.Entry<Long, Person> personEntry : persons.entrySet( ) )
+		for ( final Map.Entry<Long, Person> personEntry : persons.entrySet( ) )
 		{
 			personList.add( personEntry.getValue( ) );
 		}
@@ -70,11 +62,11 @@ public class PersonService
 		return Response.ok( personList ).build( );
 	}
 
-	private List<Person> filterByLastName( List<Person> persons, String lastName )
+	private List<Person> filterByLastName( final List<Person> persons, final String lastName )
 	{
-		List<Person> filteredPersons = new ArrayList<>( );
+		final List<Person> filteredPersons = new ArrayList<>( );
 
-		for ( Person person : persons )
+		for ( final Person person : persons )
 		{
 			if ( person.getLastName( ).equals( lastName ) )
 			{
@@ -85,11 +77,11 @@ public class PersonService
 		return filteredPersons;
 	}
 
-	private List<Person> filterByFirstName( List<Person> persons, String firstName )
+	private List<Person> filterByFirstName( final List<Person> persons, final String firstName )
 	{
-		List<Person> filteredPersons = new ArrayList<>( );
+		final List<Person> filteredPersons = new ArrayList<>( );
 
-		for ( Person person : persons )
+		for ( final Person person : persons )
 		{
 			if ( person.getFirstName( ).equals( firstName ) )
 			{
@@ -103,7 +95,7 @@ public class PersonService
 	@GET
 	@Path( "{id}" )
 	@Produces( MediaType.APPLICATION_JSON )
-	public Response getPersonById( @PathParam( "id" ) long id )
+	public Response getPersonById( @PathParam( "id" ) final long id )
 	{
 		if ( persons.get( id ) == null )
 		{
@@ -114,15 +106,15 @@ public class PersonService
 
 	@POST
 	@Consumes( MediaType.APPLICATION_JSON )
-	public Response createPerson( Person person )
+	public Response createPerson( final Person person )
 	{
-		Long id = getNextID( );
+		final Long id = getNextID( );
 
 		person.setId( id );
 
 		persons.put( id, person );
 
-		URI locationURI = uriInfo.getAbsolutePathBuilder( ).path( Long.toString( id ) ).build( new Object[ 0 ] );
+		final URI locationURI = uriInfo.getAbsolutePathBuilder( ).path( Long.toString( id ) ).build( new Object[ 0 ] );
 
 		return Response.created( locationURI ).build( );
 	}
@@ -130,19 +122,18 @@ public class PersonService
 	@PUT
 	@Path( "{id}" )
 	@Consumes( MediaType.APPLICATION_JSON )
-	public Response updatePerson( @PathParam( "id" ) long id, Person person )
+	public Response updatePerson( @PathParam( "id" ) final long id, final Person person )
 	{
-		Person oldPerson = persons.get( id );
+		final Person oldPerson = persons.get( id );
 
 		person.setId( id );
 
 		persons.put( id, person );
 
-		Response response;
+		final Response response;
 
 		if ( oldPerson == null )
 		{
-
 			response = Response.created( uriInfo.getAbsolutePath( ) ).build( );
 		}
 		else
@@ -155,7 +146,7 @@ public class PersonService
 
 	@DELETE
 	@Path( "{id}" )
-	public Response deletePerson( @PathParam( "id" ) long id )
+	public Response deletePerson( @PathParam( "id" ) final long id )
 	{
 		persons.remove( id );
 

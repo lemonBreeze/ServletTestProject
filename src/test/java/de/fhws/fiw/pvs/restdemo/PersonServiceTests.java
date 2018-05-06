@@ -16,11 +16,11 @@ import static org.junit.Assert.assertTrue;
 /**
  * (c) Tobias Fertig, FHWS 2017
  */
-public class UserServiceTests
+public class PersonServiceTests
 {
 	private final static MediaType JSON = MediaType.parse( "application/json; charset=utf-8" );
 
-	private final static String BASE_URL = "http://localhost:8080/demo/api/users";
+	private final static String BASE_URL = "http://localhost:8080/demo/api/persons";
 
 	private Genson genson;
 
@@ -31,7 +31,7 @@ public class UserServiceTests
 	private List<Person> createdPersons;
 
 	@Before
-	public void setUp()
+	public void setUp( )
 	{
 		genson = new Genson( );
 
@@ -46,15 +46,15 @@ public class UserServiceTests
 		postUser( new Person( "Hans2", "Wurst2", "test", new Date( ) ) );
 	}
 
-	public void postUser(Person person)
+	public void postUser( final Person person )
 	{
-		RequestBody body = RequestBody.create( JSON, genson.serialize( person ) );
+		final RequestBody body = RequestBody.create( JSON, genson.serialize( person ) );
 
-		Request request = new Request.Builder( ).url( BASE_URL )
-												.post( body )
-												.build( );
+		final Request request = new Request.Builder( ).url( BASE_URL )
+													  .post( body )
+													  .build( );
 
-		Response response = executeRequest( request );
+		final Response response = executeRequest( request );
 
 		if ( response.code( ) == 201 )
 		{
@@ -64,22 +64,22 @@ public class UserServiceTests
 	}
 
 	@After
-	public void tearDown()
+	public void tearDown( )
 	{
-		for ( String createdLocation : createdLocations )
+		for ( final String createdLocation : createdLocations )
 		{
-			Request request = new Request.Builder( ).url( createdLocation ).delete( ).build( );
+			final Request request = new Request.Builder( ).url( createdLocation ).delete( ).build( );
 
-			Response response = executeRequest( request );
+			final Response response = executeRequest( request );
 		}
 	}
 
 	@Test
 	public void testCreateUser( ) throws IOException
 	{
-		Person person = new Person( "Hans3", "Wurst3", "test", new Date( ) );
+		final Person person = new Person( "Hans3", "Wurst3", "test", new Date( ) );
 
-		RequestBody body = RequestBody.create( JSON, genson.serialize( person ) );
+		final RequestBody body = RequestBody.create( JSON, genson.serialize( person ) );
 
 		Request request = new Request.Builder( ).url( BASE_URL )
 												.post( body )
@@ -89,7 +89,7 @@ public class UserServiceTests
 
 		assertTrue( "Object was not created!", response.code( ) == 201 );
 
-		String location = response.header( "Location" );
+		final String location = response.header( "Location" );
 
 		createdLocations.add( location );
 		createdPersons.add( person );
@@ -124,16 +124,16 @@ public class UserServiceTests
 	}
 
 	@Test
-	public void testUpdateUser() throws IOException
+	public void testUpdateUser( ) throws IOException
 	{
-		Person person = createdPersons.get( 1 );
+		final Person person = createdPersons.get( 1 );
 		person.setLastName( "Test" );
 
-		RequestBody body = RequestBody.create( JSON, genson.serialize( person ) );
+		final RequestBody body = RequestBody.create( JSON, genson.serialize( person ) );
 
-		Request request = new Request.Builder( ).url( createdLocations.get( 1 ) ).put( body ).build( );
+		final Request request = new Request.Builder( ).url( createdLocations.get( 1 ) ).put( body ).build( );
 
-		Response response = executeRequest( request );
+		final Response response = executeRequest( request );
 
 		assertTrue( "Person was not updated!", response.code( ) == 200 );
 
@@ -141,16 +141,16 @@ public class UserServiceTests
 	}
 
 	@Test
-	public void testQueryUsers() throws IOException
+	public void testQueryUsers( ) throws IOException
 	{
-		Request request = new Request.Builder( ).url( BASE_URL + "?firstName=Hans" ).get( ).build( );
+		final Request request = new Request.Builder( ).url( BASE_URL + "?firstName=Hans" ).get( ).build( );
 
-		Response response = executeRequest( request );
+		final Response response = executeRequest( request );
 
 		assertTrue( "firstName not correct!", response.body( ).string( ).contains( "\"firstName\":\"Hans\"" ) );
 	}
 
-	private Response executeRequest( Request request )
+	private Response executeRequest( final Request request )
 	{
 		Response response;
 
@@ -158,7 +158,7 @@ public class UserServiceTests
 		{
 			response = client.newCall( request ).execute( );
 		}
-		catch ( IOException e )
+		catch ( final IOException e )
 		{
 			response = null;
 		}
